@@ -57,46 +57,45 @@ To download and build these docker images, enter the `net-modules` directory and
 
 ### Run the "before" demo
 
+### Run the "before" demo
 The user story is that we have an application called Probe which must run on port 9000.
 The user requirement is to run 4 instances of Probe application on our cluster.
 Our cluster has two servers to run Probe.
 Mesos is setup with two agents - one agent per server.
-
-
-
-- Launch the Cluster   
+#### Setup the Cluster
 This is the vanilla Mesos experience : **port conflicts and no network isolation.**
+- Launch the cluster
 ```
 ./demo/launch-cluster-before.sh
 ```
-- Access Messos   
-The Mesos status page is available at `http://localhost:5050/ `
+- Check Marathon at  `http://localhost:8080/ `   
+Marathon should show that there are no available applications - this is because we have not launched any applications at this point, just created the hardware and agents.
+- Check Messos   
+The Mesos status page is available at `http://localhost:5050/ `     
 The home Mesos tab should show no Active Tasks and no Completed Tasks.
 The Mesos Slaves tab should show two slaves available.
-- Find the IP address of the agent *netmodules_slave_1*
-We need to get the ip address of the first agent *netmodules_slave_1* using the following command `docker inspect --format '{{ .NetworkSettings.IPAddress }}' netmodules_slave_1`
-- Launch 4 instances of the Probe application
+#### Launch The Tasks
+There are five tasks.  There are four copies of the Probe application called probe-a, probe-b, probe-c, probe-d.  There is a visualization application called collect
+- Create the Marathon Tasks
 ```
 ./demo/launch-probes-before.sh
 ```
-- Check Running Apps on Mesos
-
-4. 
-The Stars-visualization application is bound to port 9001 and runs on same IP Address as first slave - this ho 
-In "before" mesos networking, tasks run on each slave bind to ports on their Host. The Stars-visualization task is set to bind to port 9001. Since it is launched first, mesos should launch it on `netmodules_slave_1`.
-
-5. View the Stars Visualization by first finding the IP of `netmodules_slave_1`
-
-        docker inspect --format '{{ .NetworkSettings.IPAddress }}' netmodules_slave_1
-
-    Then visit `http://<SLAVE_1_IP>:9001/` to see the visualization.  You should see only two probes are running, since multiple probes cannot bind to the same port on the same host.
-
-    >404? Mesos may have launched the UI task on the other slave. Rerun step 3 with `netmodules_slave_2`
-
-4. Tear down the cluster for your next demo.
-
-        ./demo/stop-cluster-before.sh
-
+- Check Marathon  at  `http://localhost:8080/ `   
+Marthon should now list the 5 applications.  It should show that the collect application is healthy, two probe applications are healthy and two probe applications are not healthy
+- Check Messos   
+The Mesos status page is available at `http://localhost:5050/ `.   
+The home Mesos tab should show three Active Tasks.  These are the visualization app and two probe applications.
+#### Find the IP Address of the Visualizer Application
+- The IP address for Visualizer can be read directly from Mesos - it is the host value for the collect task.
+- We can get the same value from docker using the following command  `docker inspect --format '{{ .NetworkSettings.IPAddress }}' netmodules_slave_1`
+#### Check Connectivity between the Probe Application
+To check the connectivity between the running application use the IP address from the previous step and go to port 9001.  The address should be like  `http://<Visualizer_app_IP>:9001/`.  
+#### Tear down the cluster for your next demo.
+```
+./demo/stop-cluster-before.sh
+```
+#### Conclusions
+You should see only two probes are running, since multiple probes cannot bind to the same port on the same host.
 ### Run the Calico demo w/o isolation demo
 
 This demo shows Calico without network isolation.  All probes are assigned their own IP Address and can reach one another.
