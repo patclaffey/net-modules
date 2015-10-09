@@ -70,12 +70,9 @@ This is the vanilla Mesos experience : **port conflicts and no network isolation
 ./demo/launch-cluster-before.sh
 ```
 - Access Messos   
-The Mesos status page is available at:
-```
-http://localhost:5050/
-```
-The home Mesos tab should show no Active Tasks and no Completed Tasks.   
-The Mesos Slaves tab should show two slaves available.  
+The Mesos status page is available at `http://localhost:5050/ `
+The home Mesos tab should show no Active Tasks and no Completed Tasks.
+The Mesos Slaves tab should show two slaves available.
 - Launch 4 instances of the Probe application
 ```
 ./demo/launch-probes-before.sh
