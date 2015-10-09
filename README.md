@@ -62,13 +62,14 @@ The user requirement is to run 4 instances of Probe application on our cluster.
 Our cluster has two servers to run Probe.
 Mesos is setup with two agents - one agent per server.
 
-This is the vanilla Mesos experience : **port conflicts and no network isolation.**
 
-- Launch the Cluster
+
+- Launch the Cluster   
+This is the vanilla Mesos experience : **port conflicts and no network isolation.**
 ```
 ./demo/launch-cluster-before.sh
 ```
-- Access Messos
+- Access Messos   
 The Mesos status page is available at:
 ```
 http://localhost:5050/
