@@ -56,22 +56,21 @@ To download and build these docker images, enter the `net-modules` directory and
     make images
 
 ### Run the "before" demo
-The user story is that we have an application called Probe which must run on port 9000.
-The user requirement is to run 4 instances of Probe application on our cluster.
-Our cluster has two servers to run Probe.
-Mesos is setup with two agents - one agent per server.
-
-#### Setup the Cluster
 This is the vanilla Mesos experience : **port conflicts and no network isolation.**
+
+The user requirement is to run 5 jobs.  The first four jobs are the probe jobs (probe-a, probe-b, probe-c, probe-d) - all of which must run on port 9000.  The fifth job is the visualizer application which runs port 9001.
+
+The infrastructure consists of a cluster of two machines, each with its own Mesos agent.
+
+#### Create the Cluster
 - Launch the cluster
 ```
 ./demo/launch-cluster-before.sh
 ```
 - Check Marathon at  `http://localhost:8080/ `   
-Marathon should show that there are no available applications - this is because we have not launched any applications at this point, just created the hardware and agents.
-- Check Messos   
-The Mesos status page is available at `http://localhost:5050/ `     
-The home Mesos tab should show no Active Tasks and no Completed Tasks.
+Marathon should show that there are no available applications - they have not been created yet.
+- Check Mesos at `http://localhost:5050/ `     
+The home Mesos tab should show no Active Tasks - they have not been launched.
 The Mesos Slaves tab should show two slaves available.
 
 #### Launch The Tasks
@@ -82,8 +81,7 @@ There are five tasks.  There are four copies of the Probe application called pro
 ```
 - Check Marathon  at  `http://localhost:8080/ `   
 Marthon should now list the 5 applications.  It should show that the collect application is healthy, two probe applications are healthy and two probe applications are not healthy
-- Check Messos   
-The Mesos status page is available at `http://localhost:5050/ `.   
+- Check Mesos at `http://localhost:5050/ `     
 The home Mesos tab should show three Active Tasks.  These are the visualization app and two probe applications.
 
 #### Find the IP Address of the Visualizer Application
