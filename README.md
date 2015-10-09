@@ -64,22 +64,25 @@ Mesos is setup with two agents - one agent per server.
 
 This is the vanilla Mesos experience : **port conflicts and no network isolation.**
 
-1. Launch the Cluster
+- Launch the Cluster
 ```
 ./demo/launch-cluster-before.sh
 ```
-2. Access Mesos
+- Access Messos
 The Mesos status page is available at:
 ```
 http://localhost:5050/
 ```
 The home Mesos tab should show no Active Tasks and no Completed Tasks.   
-The Mesos Slaves tab should show two slaves available.    
-3. Launch 4 instances of the Probe application
+The Mesos Slaves tab should show two slaves available.  
+- Launch 4 instances of the Probe application
 ```
 ./demo/launch-probes-before.sh
 ```
-4. Find the IP address of the agent *netmodules_slave_1*
+- Find the IP address of the agent *netmodules_slave_1*
+
+
+4. 
 The Stars-visualization application is bound to port 9001 and runs on same IP Address as first slave - this ho 
 In "before" mesos networking, tasks run on each slave bind to ports on their Host. The Stars-visualization task is set to bind to port 9001. Since it is launched first, mesos should launch it on `netmodules_slave_1`.
 
