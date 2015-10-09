@@ -57,21 +57,33 @@ To download and build these docker images, enter the `net-modules` directory and
 
 ### Run the "before" demo
 
-This first demo shows what life is like with "vanilla" Mesos: **port conflicts and no network isolation.**
+The user story is that we have an application called Probe which must run on port 9000.
+The user requirement is to run 4 instances of Probe application on our cluster.
+Our cluster has two servers to run Probe.
+Mesos is setup with two agents - one agent per server.
+
+This is the vanilla Mesos experience : **port conflicts and no network isolation.**
 
 1. Launch the Cluster
+```
+./demo/launch-cluster-before.sh
+```
+2. Access Mesos
+The Mesos status page is available at:
+```
+http://localhost:5050/
+```
+The home Mesos tab should show no Active Tasks and no Completed Tasks.   
+The Mesos Slaves tab should show two slaves available.    
+3. Launch 4 instances of the Probe application
+```
+./demo/launch-probes-before.sh
+```
+4. Find the IP address of the agent *netmodules_slave_1*
+The Stars-visualization application is bound to port 9001 and runs on same IP Address as first slave - this ho 
+In "before" mesos networking, tasks run on each slave bind to ports on their Host. The Stars-visualization task is set to bind to port 9001. Since it is launched first, mesos should launch it on `netmodules_slave_1`.
 
-        ./demo/launch-cluster-before.sh
-
-   >The docker-compose.yml file binds port 5050 on the Host to port 5050 of the Mesos-Master docker container, allowing quick access to the mesos UI via `http://localhost:5050/`. Upon visiting the UI, you should see a working Mesos status page with no tasks and two slaves.
-
-2. Launch the probes:
-
-        ./demo/launch-probes-before.sh
-
-   >In "before" mesos networking, tasks run on each slave bind to ports on their Host. The Stars-visualization task is set to bind to port 9001. Since it is launched first, mesos should launch it on `netmodules_slave_1`.
-
-3. View the Stars Visualization by first finding the IP of `netmodules_slave_1`
+5. View the Stars Visualization by first finding the IP of `netmodules_slave_1`
 
         docker inspect --format '{{ .NetworkSettings.IPAddress }}' netmodules_slave_1
 
