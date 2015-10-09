@@ -56,12 +56,11 @@ To download and build these docker images, enter the `net-modules` directory and
     make images
 
 ### Run the "before" demo
-
-### Run the "before" demo
 The user story is that we have an application called Probe which must run on port 9000.
 The user requirement is to run 4 instances of Probe application on our cluster.
 Our cluster has two servers to run Probe.
 Mesos is setup with two agents - one agent per server.
+
 #### Setup the Cluster
 This is the vanilla Mesos experience : **port conflicts and no network isolation.**
 - Launch the cluster
@@ -74,6 +73,7 @@ Marathon should show that there are no available applications - this is because 
 The Mesos status page is available at `http://localhost:5050/ `     
 The home Mesos tab should show no Active Tasks and no Completed Tasks.
 The Mesos Slaves tab should show two slaves available.
+
 #### Launch The Tasks
 There are five tasks.  There are four copies of the Probe application called probe-a, probe-b, probe-c, probe-d.  There is a visualization application called collect
 - Create the Marathon Tasks
@@ -85,15 +85,19 @@ Marthon should now list the 5 applications.  It should show that the collect app
 - Check Messos   
 The Mesos status page is available at `http://localhost:5050/ `.   
 The home Mesos tab should show three Active Tasks.  These are the visualization app and two probe applications.
+
 #### Find the IP Address of the Visualizer Application
 - The IP address for Visualizer can be read directly from Mesos - it is the host value for the collect task.
 - We can get the same value from docker using the following command  `docker inspect --format '{{ .NetworkSettings.IPAddress }}' netmodules_slave_1`
+
 #### Check Connectivity between the Probe Application
 To check the connectivity between the running application use the IP address from the previous step and go to port 9001.  The address should be like  `http://<Visualizer_app_IP>:9001/`.  
+
 #### Tear down the cluster for your next demo.
 ```
 ./demo/stop-cluster-before.sh
 ```
+
 #### Conclusions
 You should see only two probes are running, since multiple probes cannot bind to the same port on the same host.
 ### Run the Calico demo w/o isolation demo
