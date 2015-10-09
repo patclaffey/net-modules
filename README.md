@@ -73,12 +73,13 @@ This is the vanilla Mesos experience : **port conflicts and no network isolation
 The Mesos status page is available at `http://localhost:5050/ `
 The home Mesos tab should show no Active Tasks and no Completed Tasks.
 The Mesos Slaves tab should show two slaves available.
+- Find the IP address of the agent *netmodules_slave_1*
+We need to get the ip address of the first agent *netmodules_slave_1* using the following command `docker inspect --format '{{ .NetworkSettings.IPAddress }}' netmodules_slave_1`
 - Launch 4 instances of the Probe application
 ```
 ./demo/launch-probes-before.sh
 ```
-- Find the IP address of the agent *netmodules_slave_1*
-
+- Check Running Apps on Mesos
 
 4. 
 The Stars-visualization application is bound to port 9001 and runs on same IP Address as first slave - this ho 
